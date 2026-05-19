@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResumeCraft - Professional Resume Builder</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Onboarding Screen -->
+    <div id="onboarding" class="onboarding">
+        <div class="onboarding-content">
+            <div class="onboarding-logo">
+                <i class="fas fa-file-signature"></i>
+                <h1>ResumeCraft</h1>
+            </div>
+            <p class="onboarding-tagline">Build Your Professional Resume in Minutes</p>
+            
+            <div class="onboarding-features">
+                <div class="feature-card">
+                    <i class="fas fa-palette"></i>
+                    <h3>10 Premium Templates</h3>
+                    <p>Choose from professionally designed templates</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-bolt"></i>
+                    <h3>Real-time Preview</h3>
+                    <p>See changes instantly as you type</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-download"></i>
+                    <h3>PDF Export</h3>
+                    <p>Download high-quality PDF resumes</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>100% Private</h3>
+                    <p>All data stored locally on your device</p>
+                </div>
+            </div>
+            
+            <button id="startBtn" class="btn-primary btn-large">
+                <span>Create My Resume</span>
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="app" class="app hidden">
+        <!-- Sidebar -->
+        <aside class="sidebar glass">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-file-signature"></i>
+                    <span>ResumeCraft</span>
+                </div>
+                <button id="toggleSidebar" class="btn-icon">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-section="personal">
+                    <i class="fas fa-user"></i>
+                    <span>Personal Info</span>
+                </a>
+                <a href="#" class="nav-item" data-section="summary">
+                    <i class="fas fa-align-left"></i>
+                    <span>Summary</span>
+                </a>
+                <a href="#" class="nav-item" data-section="experience">
+                    <i class="fas fa-briefcase"></i>
+                    <span>Experience</span>
+                </a>
+                <a href="#" class="nav-item" data-section="education">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Education</span>
+                </a>
+                <a href="#" class="nav-item" data-section="skills">
+                    <i class="fas fa-star"></i>
+                    <span>Skills</span>
+                </a>
+                <a href="#" class="nav-item" data-section="languages">
+                    <i class="fas fa-language"></i>
+                    <span>Languages</span>
+                </a>
+                <a href="#" class="nav-item" data-section="projects">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Projects</span>
+                </a>
+                <a href="#" class="nav-item" data-section="certifications">
+                    <i class="fas fa-certificate"></i>
+                    <span>Certifications</span>
+                </a>
+                <a href="#" class="nav-item" data-section="social">
+                    <i class="fas fa-share-alt"></i>
+                    <span>Social Links</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="strength-meter">
+                    <div class="strength-label">
+                        <span>Resume Strength</span>
+                        <span id="strengthPercent">0%</span>
+                    </div>
+                    <div class="strength-bar">
+                        <div id="strengthFill" class="strength-fill"></div>
+                    </div>
+                </div>
+                
+                <div class="theme-toggle">
+                    <button id="darkModeToggle" class="btn-icon-round">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <span>Dark Mode</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="top-bar glass">
+                <div class="top-bar-left">
+                    <h2 id="sectionTitle">Personal Information</h2>
+                </div>
+                <div class="top-bar-actions">
+                    <button id="undoBtn" class="btn-icon" title="Undo (Ctrl+Z)">
+                        <i class="fas fa-undo"></i>
+                    </button>
+                    <button id="redoBtn" class="btn-icon" title="Redo (Ctrl+Y)">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                    <div class="separator"></div>
+                    <button id="importBtn" class="btn-secondary">
+                        <i class="fas fa-upload"></i>
+                        <span>Import</span>
+                    </button>
+                    <button id="exportBtn" class="btn-secondary">
+                        <i class="fas fa-download"></i>
+                        <span>Export</span>
+                    </button>
+                    <div class="separator"></div>
+                    <button id="downloadPdfBtn" class="btn-primary">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>Download PDF</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Form Section -->
+            <div class="form-container">
+                <form id="resumeForm" class="resume-form">
+                    <!-- Personal Info Section -->
+                    <section id="personalSection" class="form-section active">
+                        <div class="form-group photo-upload">
+                            <label>Profile Photo</label>
+                            <div class="photo-drop-zone" id="photoDropZone">
+                                <img id="photoPreview" class="photo-preview hidden" alt="Profile preview">
+                                <div class="photo-placeholder" id="photoPlaceholder">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <p>Drag & drop or click to upload</p>
+                                    <span>JPG, PNG (Max 2MB)</span>
+                                </div>
+                                <input type="file" id="photoInput" accept="image/*" hidden>
+                            </div>
+                            <button type="button" id="removePhoto" class="btn-text hidden">Remove Photo</button>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fullName">Full Name *</label>
+                                <input type="text" id="fullName" placeholder="John Doe" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="jobTitle">Job Title</label>
+                                <input type="text" id="jobTitle" placeholder="Software Engineer">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">Email *</label>
+                                <input type="email" id="email" placeholder="john@example.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone</label>
+                                <input type="tel" id="phone" placeholder="+1 234 567 8900">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="location">Location</label>
+                                <input type="text" id="location" placeholder="New York, USA">
+                            </div>
+                            <div class="form-group">
+                                <label for="website">Website</label>
+                                <input type="url" id="website" placeholder="https://johndoe.com">
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Summary Section -->
+                    <section id="summarySection" class="form-section">
+                        <div class="form-group">
+                            <label for="summary">Professional Summary</label>
+                            <textarea id="summary" rows="6" placeholder="Write a compelling summary about your professional background, key achievements, and career goals..."></textarea>
+                            <div class="char-count"><span id="summaryCount">0</span>/500</div>
+                        </div>
+                    </section>
+
+                    <!-- Experience Section -->
+                    <section id="experienceSection" class="form-section">
+                        <div id="experienceList" class="dynamic-list"></div>
+                        <button type="button" id="addExperience" class="btn-add">
+                            <i class="fas fa-plus"></i> Add Position
+                        </button>
+                    </section>
+
+                    <!-- Education Section -->
+                    <section id="educationSection" class="form-section">
+                        <div id="educationList" class="dynamic-list"></div>
+                        <button type="button" id="addEducation" class="btn-add">
+                            <i class="fas fa-plus"></i> Add Education
+                        </button>
+                    </section>
+
+                    <!-- Skills Section -->
+                    <section id="skillsSection" class="form-section">
+                        <div class="form-group">
+                            <label>Add Skill</label>
+                            <div class="skill-input-group">
+                                <input type="text" id="skillName" placeholder="Skill name (e.g., JavaScript)">
+                                <select id="skillLevel">
+                                    <option value="beginner">Beginner</option>
+                                    <option value="intermediate" selected>Intermediate</option>
+                                    <option value="advanced">Advanced</option>
+                                    <option value="expert">Expert</option>
+                                </select>
+                                <button type="button" id="addSkill" class="btn-primary">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="skillsList" class="skills-grid"></div>
+                    </section>
+
+                    <!-- Languages Section -->
+                    <section id="languagesSection" class="form-section">
+                        <div id="languagesList" class="dynamic-list"></div>
+                        <button type="button" id="addLanguage" class="btn-add">
+                            <i class="fas fa-plus"></i> Add Language
+                        </button>
+                    </section>
+
+                    <!-- Projects Section -->
+                    <section id="projectsSection" class="form-section">
+                        <div id="projectsList" class="dynamic-list"></div>
+                        <button type="button" id="addProject" class="btn-add">
+                            <i class="fas fa-plus"></i> Add Project
+                        </button>
+                    </section>
+
+                    <!-- Certifications Section -->
+                    <section id="certificationsSection" class="form-section">
+                        <div id="certificationsList" class="dynamic-list"></div>
+                        <button type="button" id="addCertification" class="btn-add">
+                            <i class="fas fa-plus"></i> Add Certification
+                        </button>
+                    </section>
+
+                    <!-- Social Links Section -->
+                    <section id="socialSection" class="form-section">
+                        <div id="socialList" class="dynamic-list"></div>
+                        <button type="button" id="addSocial" class="btn-add">
+                            <i class="fas fa-plus"></i> Add Social Link
+                        </button>
+                    </section>
+                </form>
+            </div>
+        </main>
+
+        <!-- Preview Panel -->
+        <aside class="preview-panel glass">
+            <div class="preview-header">
+                <h3>Live Preview</h3>
+                <div class="preview-controls">
+                    <button id="zoomOut" class="btn-icon-small" title="Zoom Out">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <span id="zoomLevel">100%</span>
+                    <button id="zoomIn" class="btn-icon-small" title="Zoom In">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <div class="separator-vertical"></div>
+                    <button id="fullscreenPreview" class="btn-icon-small" title="Fullscreen">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="preview-toolbar">
+                <div class="template-selector">
+                    <label>Template</label>
+                    <select id="templateSelect">
+                        <option value="minimal">Minimal White</option>
+                        <option value="sidebar">Modern Sidebar</option>
+                        <option value="executive">Executive Pro</option>
+                        <option value="creative">Creative Designer</option>
+                        <option value="dark">Dark Mode</option>
+                        <option value="tech">Tech Developer</option>
+                        <option value="ats">Compact ATS</option>
+                        <option value="timeline">Elegant Timeline</option>
+                        <option value="gradient">Gradient Modern</option>
+                        <option value="international">International CV</option>
+                    </select>
+                </div>
+                
+                <div class="font-selector">
+                    <label>Font</label>
+                    <select id="fontSelect">
+                        <option value="Inter">Inter</option>
+                        <option value="Poppins">Poppins</option>
+                        <option value="Playfair Display">Playfair Display</option>
+                        <option value="DM Sans">DM Sans</option>
+                        <option value="Montserrat">Montserrat</option>
+                        <option value="JetBrains Mono">JetBrains Mono</option>
+                    </select>
+                </div>
+                
+                <div class="color-selector">
+                    <label>Accent Color</label>
+                    <input type="color" id="accentColor" value="#2563eb">
+                </div>
+            </div>
+            
+            <div class="preview-container" id="previewContainer">
+                <iframe id="previewFrame" class="preview-frame"></iframe>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Template Gallery Modal -->
+    <div id="templateModal" class="modal hidden">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2>Choose Your Template</h2>
+                <button class="modal-close" id="closeTemplateModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="template-gallery">
+                <div class="template-card" data-template="minimal">
+                    <div class="template-preview minimal-preview"></div>
+                    <div class="template-info">
+                        <h4>Minimal White</h4>
+                        <p>Clean Swiss typography, ATS friendly</p>
+                    </div>
+                </div>
+                <div class="template-card" data-template="sidebar">
+                    <div class="template-preview sidebar-preview"></div>
+                    <div class="template-info">
+                        <h4>Modern Sidebar</h4>
+                        <p>Colored left sidebar, corporate style</p>
+                    </div>
+                </div>
+                <div class="template-card" data-template="executive">
+                    <div class="template-preview executive-preview"></div>
+                    <div class="template-info">
+                        <h4>Executive Pro</h4>
+                        <p>Luxury corporate executive resume</p>
+                    </div>
+                </div>
+                <div class="template-card" data-template="creative">
+                    <div class="template-preview creative-preview"></div>
+                    <div class="template-info">
+                        <h4>Creative Designer</h4>
+                        <p>Stylish layout, portfolio feel</p>
+                    </div>
+                </div>
+                <div class="template-card" data-template="dark">
+                    <div class="template-preview dark-preview"></div>
+                    <div class="template-info">
+                        <h4>Dark Mode</h4>
+                        <p>Dark background, neon highlights</p>
+                    </div>
+                </div>
+                <div class="template-card" data-template="tech">
+                    <div class="template-preview tech-preview"></div>
+                    <div class="template-info">
+                        <h4>Tech Developer</h4>
+                        <p>Developer portfolio, GitHub theme</p>
+                    </div>
+                </div>
+                <div class="template-card" data-template="ats">
+                    <div class="template-preview ats-preview"></div>
+                    <div class="template-info">
+                        <h4>Compact ATS</h4>
+                        <p>Optimized for ATS parsing</p>
+                    </div>
+                </div>
+                <div class="template-card" data-template="timeline">
+                    <div class="template-preview timeline-preview"></div>
+                    <div class="template-info">
+                        <h4>Elegant Timeline</h4>
+                        <p>Vertical timeline experience</p>
+                    </div>
+                </div>
+                <div class="template-card" data-template="gradient">
+                    <div class="template-preview gradient-preview"></div>
+                    <div class="template-info">
+                        <h4>Gradient Modern</h4>
+                        <p>Premium gradients, startup style</p>
+                    </div>
+                </div>
+                <div class="template-card" data-template="international">
+                    <div class="template-preview international-preview"></div>
+                    <div class="template-info">
+                        <h4>International CV</h4>
+                        <p>Europass-inspired, academic style</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import Modal -->
+    <div id="importModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Import Resume Data</h2>
+                <button class="modal-close" id="closeImportModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <textarea id="importData" placeholder="Paste your JSON resume data here..." rows="10"></textarea>
+                <button id="confirmImport" class="btn-primary btn-full">Import Data</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
